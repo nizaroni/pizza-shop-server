@@ -11,7 +11,8 @@ const session      = require("express-session");
 const MongoStore   = require("connect-mongo")(session);
 const passport     = require("passport");
 
-const authRouter = require("./routes/auth-router.js");
+const authRouter = require('./routes/auth-router.js');
+const orderRouter = require('./routes/order-router.js');
 require("./config/passport/setup.js");
 
 mongoose
@@ -46,7 +47,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-app.use("/api", authRouter);
+app.use('/api', authRouter);
+app.use('/api', orderRouter);
 
 
 module.exports = app;

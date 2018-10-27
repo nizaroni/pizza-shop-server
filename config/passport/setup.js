@@ -22,5 +22,5 @@ passport.deserializeUser((userId, done) => {
       // "null" in the 1st argument tells Passport that there is "null" errors
       done(null, userDoc);
     })
-    .catch(err => done(err));
+    .catch(done);
 });
