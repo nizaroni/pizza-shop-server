@@ -7,7 +7,12 @@ const mongoose     = require('mongoose');
 const logger       = require('morgan');
 const path         = require('path');
 const cors         = require('cors');
+const session      = require("express-session");
+const MongoStore   = require("connect-mongo")(session);
+const passport     = require("passport");
 
+const authRouter = require("./routes/auth-router.js");
+require("./config/passport/setup.js");
 
 mongoose
   .connect(process.env.MONGODB_URI, {useNewUrlParser: true})
@@ -31,9 +36,17 @@ app.use(cors({
   credentials: true,
   origin: [ "http://localhost:3000" ]
 }));
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  saveUninitialized: true,
+  resave: true,
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 
-// routes
+app.use("/api", authRouter);
 
 
 module.exports = app;
