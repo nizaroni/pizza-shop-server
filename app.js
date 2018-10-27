@@ -6,6 +6,7 @@ const express      = require('express');
 const mongoose     = require('mongoose');
 const logger       = require('morgan');
 const path         = require('path');
+const cors         = require('cors');
 
 
 mongoose
@@ -26,7 +27,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(cors({
+  credentials: true,
+  origin: [ "http://localhost:3000" ]
+}));
 
 
 // routes
